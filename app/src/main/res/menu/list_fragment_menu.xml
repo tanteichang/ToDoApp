@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_seatch"
+        android:title="@string/search"
+        android:iconTint="@color/white"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_search_24"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/menu_sortBy" android:title="@string/sortby">
+            <menu>
+                <item
+                    android:id="@+id/menu_prioity_high"
+                    android:title="@string/priority_high" />
+                <item
+                    android:id="@+id/menu_prioity_low"
+                    android:title="@string/priority_low" />
+            </menu>
+        </item>
+    </group>
+
+    <item
+        android:id="@+id/meun_delete_all"
+        android:title="Delete All"
+        app:showAsAction="never" />
+</menu>
