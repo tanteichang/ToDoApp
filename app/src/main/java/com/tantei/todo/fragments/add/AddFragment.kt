@@ -19,7 +19,9 @@ import com.tantei.todo.data.models.TodoData
 import com.tantei.todo.data.viewmodel.ToDoViewModel
 import com.tantei.todo.databinding.FragmentAddBinding
 import com.tantei.todo.fragments.SharedViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddFragment : BaseFragmentVB<FragmentAddBinding>() {
 
     private val todoViewModel: ToDoViewModel by activityViewModels()

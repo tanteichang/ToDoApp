@@ -3,8 +3,14 @@ package com.tantei.todo.data.repository
 import androidx.lifecycle.LiveData
 import com.tantei.todo.data.TodoDao
 import com.tantei.todo.data.models.TodoData
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ToDoRepository(private val todoDao: TodoDao) {
+@Singleton
+class ToDoRepository @Inject constructor() {
+
+    @Inject
+    lateinit var todoDao: TodoDao
 
     val getAllData: LiveData<List<TodoData>> = todoDao.getAllData()
     val sortByHighPriority: LiveData<List<TodoData>> = todoDao.sortByHighPriority()

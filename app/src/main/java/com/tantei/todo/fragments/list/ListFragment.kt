@@ -17,6 +17,7 @@ import com.tantei.todo.data.viewmodel.ToDoViewModel
 import com.tantei.todo.databinding.FragmentListListBinding
 import com.tantei.todo.fragments.SharedViewModel
 import com.tantei.todo.fragments.list.adapter.ListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
 private const val TAG = "ListFragment"
@@ -24,8 +25,9 @@ private const val TAG = "ListFragment"
 /**
  * A fragment representing a list of Items.
  */
-class ListFragment : BaseFragmentVB<FragmentListListBinding>(), SearchView.OnQueryTextListener {
 
+@AndroidEntryPoint
+class ListFragment : BaseFragmentVB<FragmentListListBinding>(), SearchView.OnQueryTextListener {
 
     private val adapter: ListAdapter by lazy { ListAdapter() }
     private val toDoViewModel: ToDoViewModel by activityViewModels()

@@ -16,8 +16,9 @@ import com.tantei.todo.data.models.TodoData
 import com.tantei.todo.data.viewmodel.ToDoViewModel
 import com.tantei.todo.databinding.FragmentUpdateBinding
 import com.tantei.todo.fragments.SharedViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class UpdateFragment : BaseFragmentVB<FragmentUpdateBinding>() {
 
     private val args by navArgs<UpdateFragmentArgs>()
