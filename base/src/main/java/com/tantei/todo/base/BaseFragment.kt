@@ -9,8 +9,10 @@ open class BaseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView(view)
         initEvent(view)
+        initObserve()
     }
 
     open fun initView(view: View?) {}
     open fun initEvent(view: View?) {}
+    open fun initObserve(){}
 }

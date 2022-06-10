@@ -1,9 +1,12 @@
 package com.tantei.todo.fragments.add
 
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.*
 import android.widget.Toast
+import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -11,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.tantei.todo.R
 import com.tantei.todo.base.BaseFragmentVB
 import com.tantei.todo.data.models.Priority
+import com.tantei.todo.data.models.State
 import com.tantei.todo.data.models.TodoData
 import com.tantei.todo.data.viewmodel.ToDoViewModel
 import com.tantei.todo.databinding.FragmentAddBinding
@@ -59,7 +63,7 @@ class AddFragment : BaseFragmentVB<FragmentAddBinding>() {
             return
         }
 
-        val data = TodoData(0, title, sharedViewModel.parsePriority(priority), desc )
+        val data = TodoData(0, title, sharedViewModel.parsePriority(priority), desc, State.NEW)
         todoViewModel.insertData(data)
         Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_addFragment_to_listFragment)

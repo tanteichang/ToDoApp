@@ -2,6 +2,7 @@ package com.tantei.todo.data
 
 import android.app.Application
 import androidx.room.Room
+import com.tantei.todo.data.migration.Migration1To2
 
 object DatabaseManager {
     private const val DB_NAME = "todo_database"
@@ -12,6 +13,7 @@ object DatabaseManager {
             throw Exception("call DatabaseManager.withApplication first")
         }
         Room.databaseBuilder(application.applicationContext, ToDoDataBase::class.java, DB_NAME)
+            .fallbackToDestructiveMigration()
             .build()
     }
 

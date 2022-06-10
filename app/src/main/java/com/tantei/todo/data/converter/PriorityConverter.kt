@@ -1,9 +1,10 @@
-package com.tantei.todo.data
+package com.tantei.todo.data.converter
 
 import androidx.room.TypeConverter
 import com.tantei.todo.data.models.Priority
+import com.tantei.todo.data.models.State
 
-class Converter {
+class PriorityConverter {
 
     @TypeConverter
     fun fromPriority(priority: Priority): String {
@@ -14,4 +15,6 @@ class Converter {
     fun toPriority(priority: String): Priority {
         return Priority.valueOf(priority)
     }
+
+
 }

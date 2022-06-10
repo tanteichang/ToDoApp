@@ -1,6 +1,5 @@
-package com.tantei.todo.fragments.list
+package com.tantei.todo.fragments.list.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +8,14 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tantei.todo.R
 import com.tantei.todo.data.models.Priority
 import com.tantei.todo.data.models.TodoData
+import com.tantei.todo.fragments.list.ListFragmentDirections
+import javax.inject.Inject
+
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
@@ -53,7 +56,9 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
     }
 
     fun setData(todoData: List<TodoData>) {
+        val todoDiffUtil = ToDoDiffUtil(dataList, todoData)
+        val todoDiffResult = DiffUtil.calculateDiff(todoDiffUtil)
         this.dataList = todoData
-        notifyDataSetChanged()
+        todoDiffResult.dispatchUpdatesTo(this)
     }
 }
