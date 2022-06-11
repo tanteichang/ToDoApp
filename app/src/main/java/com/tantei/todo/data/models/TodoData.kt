@@ -14,5 +14,5 @@ data class TodoData (
     val title: String,
     val priority: Priority,
     val description: String,
-    val state: State = State.NEW
+    var state: State = State.NEW
 ) : Parcelable

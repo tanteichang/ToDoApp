@@ -2,6 +2,7 @@ package com.tantei.todo.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.tantei.todo.data.models.State
 import com.tantei.todo.data.models.TodoData
 
 @Dao
@@ -9,6 +10,9 @@ interface TodoDao {
 
     @Query("SELECT * FROM todo_table ORDER BY id ASC")
     fun getAllData(): LiveData<List<TodoData>>
+
+    @Query("SELECT * FROM todo_table WHERE state IN (:states) ORDER BY id ASC")
+    fun getAllDataByStates(states: List<Byte>): LiveData<List<TodoData>>
 
     @Query("SELECT * FROM todo_table WHERE id = :id")
     fun getDataById(id: Int): LiveData<TodoData>
@@ -21,6 +25,7 @@ interface TodoDao {
 
     @Delete
     suspend fun deleteData(todoData: TodoData)
+
 
     @Query("DELETE FROM todo_table")
     suspend fun deleteAll()

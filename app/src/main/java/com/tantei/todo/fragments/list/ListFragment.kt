@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
 import com.tantei.todo.R
 import com.tantei.todo.base.BaseFragmentVB
+import com.tantei.todo.data.models.State
 import com.tantei.todo.data.models.TodoData
 import com.tantei.todo.data.viewmodel.ToDoViewModel
 import com.tantei.todo.databinding.FragmentListListBinding
@@ -19,6 +20,7 @@ import com.tantei.todo.fragments.SharedViewModel
 import com.tantei.todo.fragments.list.adapter.ListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
+import javax.inject.Inject
 
 private const val TAG = "ListFragment"
 
@@ -29,7 +31,7 @@ private const val TAG = "ListFragment"
 @AndroidEntryPoint
 class ListFragment : BaseFragmentVB<FragmentListListBinding>(), SearchView.OnQueryTextListener {
 
-    private val adapter: ListAdapter by lazy { ListAdapter() }
+    @Inject lateinit var  adapter: ListAdapter
     private val toDoViewModel: ToDoViewModel by activityViewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
@@ -67,8 +69,7 @@ class ListFragment : BaseFragmentVB<FragmentListListBinding>(), SearchView.OnQue
     }
     override fun initObserve() {
         super.initObserve()
-        toDoViewModel.getAllData.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG, "initObserve: getAllData $it")
+        toDoViewModel.getDataByStates(State.NEW, State.DELETED).observe(viewLifecycleOwner, Observer {
             adapter.setData(it)
             sharedViewModel.checkIfDatabaseEmpty(it)
         })
@@ -139,12 +140,21 @@ class ListFragment : BaseFragmentVB<FragmentListListBinding>(), SearchView.OnQue
     private fun swipeToDelete(recyclerView: RecyclerView) {
         val swipeToDeleteCallback = object : SwipeToDelete() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val itemToDelete = adapter.dataList[viewHolder.bindingAdapterPosition]
-                // Delete item
-                toDoViewModel.deleteData(itemToDelete)
-                adapter.notifyItemRemoved(viewHolder.bindingAdapterPosition)
-                // Restore Deleted item
-                restoreDeletedData(viewHolder.itemView, itemToDelete)
+                val currentItem = adapter.dataList[viewHolder.bindingAdapterPosition]
+                when(direction) {
+                    ItemTouchHelper.LEFT -> {
+                        // to Recycling station
+                        toDoViewModel.fakeDeleteData(currentItem)
+                        adapter.notifyItemRemoved(viewHolder.bindingAdapterPosition)
+                        // Restore Deleted item
+                        restoreDeletedData(viewHolder.itemView, currentItem)
+                    }
+                    ItemTouchHelper.RIGHT -> {
+                        currentItem.state = if (currentItem.state === State.NEW) State.DONE else State.NEW
+                        toDoViewModel.updateData(currentItem)
+                        adapter.notifyItemChanged(viewHolder.bindingAdapterPosition)
+                    }
+                }
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)

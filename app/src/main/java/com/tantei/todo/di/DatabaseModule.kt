@@ -16,11 +16,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
     @Provides
-    fun provideTodoDao(database: ToDoDataBase): TodoDao {
-        return database.toDoDao()
-    }
-
-    @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext appContext: Context): ToDoDataBase {
         return Room.databaseBuilder(
@@ -29,4 +24,11 @@ object DatabaseModule {
             "todo_database"
         ).build()
     }
+
+    @Provides
+    @Singleton
+    fun provideTodoDao(database: ToDoDataBase): TodoDao {
+        return database.toDoDao()
+    }
+
 }

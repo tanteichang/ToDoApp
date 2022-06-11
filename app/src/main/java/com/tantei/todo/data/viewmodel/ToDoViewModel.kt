@@ -4,8 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.tantei.todo.data.DatabaseManager
-import com.tantei.todo.data.ToDoDataBase
+import com.tantei.todo.data.models.State
 import com.tantei.todo.data.models.TodoData
 import com.tantei.todo.data.repository.ToDoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +16,6 @@ class ToDoViewModel @Inject constructor(
     application: Application,
     private val repository: ToDoRepository
 ) : AndroidViewModel(application) {
-    private val todoDao = DatabaseManager.db.toDoDao()
-
 
     val getAllData: LiveData<List<TodoData>>
     val sortByHighPriority: LiveData<List<TodoData>>
@@ -28,6 +25,10 @@ class ToDoViewModel @Inject constructor(
         getAllData = repository.getAllData
         sortByHighPriority = repository.sortByHighPriority
         sortByLowPriority = repository.sortByLowPriority
+    }
+
+    fun getDataByStates(vararg states: State): LiveData<List<TodoData>> {
+        return repository.getDataByStates(*states)
     }
 
     fun insertData(todoData: TodoData) {
@@ -40,6 +41,13 @@ class ToDoViewModel @Inject constructor(
             repository.updateData(todoData)
         }
     }
+
+    fun fakeDeleteData(todoData: TodoData) {
+        viewModelScope.launch {
+            repository.fakeDeleteData(todoData)
+        }
+    }
+
     fun deleteData(todoData: TodoData) {
         viewModelScope.launch {
             repository.deleteData(todoData)

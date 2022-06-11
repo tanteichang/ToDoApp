@@ -1,5 +1,6 @@
 package com.tantei.todo.fragments.list.adapter
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tantei.todo.R
 import com.tantei.todo.data.models.Priority
+import com.tantei.todo.data.models.State
 import com.tantei.todo.data.models.TodoData
 import com.tantei.todo.fragments.list.ListFragmentDirections
 import javax.inject.Inject
 
 
-class ListAdapter : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+class ListAdapter @Inject constructor() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
     var dataList = emptyList<TodoData>()
 
@@ -44,6 +46,11 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
         titleText.text = currentData.title
         descText.text = currentData.description
+        if (currentData.state == State.DONE) {
+            titleText.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
+            descText.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
+        }
+
         when(currentData.priority) {
             Priority.HIGH -> priorityIndicator.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.red))
             Priority.MEDIUM -> priorityIndicator.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.yellow))

@@ -11,8 +11,11 @@ import androidx.lifecycle.MutableLiveData
 import com.tantei.todo.R
 import com.tantei.todo.data.models.Priority
 import com.tantei.todo.data.models.TodoData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SharedViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class SharedViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
 
     val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
     fun checkIfDatabaseEmpty(toDoData: List<TodoData>) {
